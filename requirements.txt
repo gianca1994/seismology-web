@@ -1,0 +1,4 @@
+flask
+flask_login
+Flask-Breadcrumbs
+flask_wtf
