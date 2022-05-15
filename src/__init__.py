@@ -18,4 +18,7 @@ def create_app():
     Breadcrumbs(app=app)
     login_manager.init_app(app)
 
+    from .routes import main
+    app.register_blueprint(main.main)
+
     return app
