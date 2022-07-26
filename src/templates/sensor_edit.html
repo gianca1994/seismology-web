@@ -1,0 +1,36 @@
+{% extends "main.html" %} {# Herencia #}
+{% import "macros.html" as macro %}
+{% from "form_macros.html" import show_field, show_submit %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2 d-none d-md-block"></div>
+        <div class="col-md-8">
+            <h1>Edit Sensor</h1>
+            <form method="POST" action="{{ url_for('sensor.edit', id=id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                <div class="form-group">
+                    <div class="col-auto">
+                        {{ show_field(form.name, class="form-control") }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-auto">
+                        {{ show_field(form.ip, class="form-control") }} <br>
+                        {{ show_field(form.port, class="form-control") }} <br>
+                        {{ show_field(form.status, type="checkbox") }} <br>
+                        {{ show_field(form.active, type="checkbox") }} <br>
+                        {{ show_field(form.userId, class="form-control") }} <br>
+                    </div>
+
+                    <div class="col-auto">
+                        {{ show_submit(form.submit, class="btn btn-success") }}
+                    </div>
+            </form>
+        </div>
+        <div class="col-md-2 d-none d-md-block"></div>
+    </div>
+</div>
+{% endblock %}

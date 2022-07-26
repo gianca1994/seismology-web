@@ -1,0 +1,59 @@
+{% extends "main.html" %}
+{% import "macros.html" as macro %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 d-none d-md-block"></div>
+        <div class="col-md-4">
+            <h1>Detailed Sensor</h1>
+
+            <div class="table-responsive text-center">
+                <table class="table table-dark table-striped table-hover table-bordered">
+                    <caption>
+                        <a name="modify" class="btn btn-success" href="{{url_for('sensor.edit',id=sensor.id)}}"
+                           role="button">Modify</a>
+                        <a name="delete" class="btn btn-danger" href="{{url_for('sensor.delete',id=sensor.id)}}"
+                           role="button">Delete</a>
+                    </caption>
+                    <tbody>
+                    <tr>
+                        <th scope="row">ID</th>
+                        <td>{{sensor.id}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>{{sensor.name}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">IP</th>
+                        <td>{{sensor.ip}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">PORT</th>
+                        <td>{{sensor.port}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Status</th>
+                        <td>{{sensor.status}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Active</th>
+                        <td>{{sensor.active}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">User assigned</th>
+                        <td>
+                            {% if sensor.user %}
+                            {{sensor.user.email}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-4 d-none d-md-block"></div>
+    </div>
+</div>
+{% endblock %}

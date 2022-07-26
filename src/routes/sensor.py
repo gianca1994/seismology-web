@@ -8,7 +8,7 @@ from ..forms.sensor import SensorCreateForm, SensorEditForm, SensorFilterForm
 from ..utilities.functions import sendRequest
 from .auth import admin_required
 
-sensor = Blueprint("sensor", __name__, url_prefix="/sensor")
+sensor = Blueprint("sensor", __name__, url_prefix="/sensors")
 
 
 @sensor.route("/")
@@ -20,7 +20,7 @@ def index():
     r = sendRequest(method="get", url="/users-info")
 
     filter.userId.choices = [(int(user["id"]), user["email"]) for user in json.loads(r.text)["Users"]]
-    filter.userId.choices.insert(0, [0, "All"])
+    filter.userId.choices.insert(0, (0, "All"))
     data = {}
 
     if filter.validate():
@@ -69,7 +69,7 @@ def index():
 @admin_required
 @register_breadcrumb(sensor, ".view", "Sensor")
 def view(id):
-    r = sendRequest(method="get", url="/sensor/" + str(id), auth=True)
+    r = sendRequest(method="get", url="/sensors/" + str(id), auth=True)
 
     if r.status_code == 404:
         flash("Sensor not found", "danger")
@@ -114,10 +114,10 @@ def edit(id):
     req = sendRequest(method="get", url="/users-info")
     users = [(int(user["id"]), user["email"]) for user in json.loads(req.text)["Users"]]
     form.userId.choices = users
-    form.userId.choices.insert(0, [0, "Select one user"])
+    form.userId.choices.insert(0, (0, "Select one user"))
 
     if not form.is_submitted():
-        r = sendRequest(method="get", url="/sensor/" + str(id), auth=True)
+        r = sendRequest(method="get", url="/sensors/" + str(id), auth=True)
         if r.status_code == 404:
             flash("Sensor not found", "danger")
             return redirect(url_for("sensor.index"))
@@ -146,7 +146,7 @@ def edit(id):
             "userId": form.userId.data,
         }
         data = json.dumps(sensor)
-        r = sendRequest(method="put", url="/sensor/" + str(id), data=data, auth=True)
+        r = sendRequest(method="put", url="/sensors/" + str(id), data=data, auth=True)
         flash("Sensor edited", "success")
         return redirect(url_for("sensor.index"))
 
@@ -161,6 +161,6 @@ def edit(id):
 @login_required
 @admin_required
 def delete(id):
-    r = sendRequest(method="delete", url="/sensor/" + str(id), auth=True)
+    r = sendRequest(method="delete", url="/sensors/" + str(id), auth=True)
     flash("Sensor deleted", "danger")
     return redirect(url_for("sensor.index"))

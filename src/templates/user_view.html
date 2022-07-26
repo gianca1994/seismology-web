@@ -1,0 +1,39 @@
+{% extends "main.html" %}
+{% import "macros.html" as macro %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 d-none d-md-block"></div>
+        <div class="col-md-4">
+            <h1>Detailed User</h1>
+
+            <div class="table-responsive text-center">
+                <table class="table table-dark table-striped table-hover table-bordered">
+                    <caption>
+                        <a name="modify" class="btn btn-success" href="{{url_for('user.edit',id=user.id)}}"
+                           role="button">Modify</a>
+                        <a name="delete" class="btn btn-danger" href="{{url_for('user.delete',id=user.id)}}"
+                           role="button">Delete</a>
+                    </caption>
+                    <tbody>
+                    <tr>
+                        <th scope="row">ID</th>
+                        <td>{{user.id}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td>{{user.email}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Admin</th>
+                        <td>{{user.admin}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-4 d-none d-md-block"></div>
+    </div>
+</div>
+{% endblock %}

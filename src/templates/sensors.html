@@ -1,0 +1,234 @@
+{% extends "main.html" %}
+{% import "macros.html" as macro %}
+{% from "form_macros.html" import show_field, show_submit, show_checkbox, show_placeholder %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="collapse show" id="filter">
+                <div class="container">
+
+                    <h3 class="text-uppercase text-center text-white">Filters</h3>
+                    <hr class="bg-white"/>
+
+                    <form method="GET" action="{{url_for('sensor.index')}}">
+                        <div class="form-row">
+                            {{show_submit(filter.submit, class='btn btn-success')}}
+                        </div>
+                        <br>
+                        <div class="form-row">
+                            {{show_field(filter.name, class='form-control')}}
+                        </div>
+                        <br>
+                        <div class="form-row">
+                            {{show_checkbox(filter.status)}}
+                        </div>
+                        <div class="form-row">
+                            {{show_checkbox(filter.active)}}
+                        </div>
+                        <div class="form-row">
+                            {{show_field(filter.userId, class='form-control')}}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <h2 class="text-uppercase text-center text-white">{{title}}</h2>
+            <hr class="bg-white"/>
+
+            <div class="row my-3">
+                <div class="col-auto">
+                    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#filter">
+                        Toggle Filters
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-success" href="{{ url_for('sensor.create') }}" role="button">Create</a>
+                </div>
+                <div class="col-auto my-auto">
+                    Total: {{pagination.total}}
+                </div>
+            </div>
+
+            <div class="table-responsive text-center">
+                <table class="table table-dark table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">
+                            {% if request.args.sort_by == "name.desc" %}
+                            <a class="text-white"
+                               href="{{ url_for('sensor.index',
+                                    sort_by = 'name',
+                                    name = request.args.name,
+                                    status = request.args.status,
+                                    active = request.args.active,
+                                    userId = request.args.userId )}}">Name</a>
+                            {% else %}
+                            <a class="text-white"
+                               href="{{ url_for('sensor.index',
+                                    sort_by = 'name.desc',
+                                    name = request.args.name,
+                                    status = request.args.status,
+                                    active = request.args.active,
+                                    userId = request.args.userId )}}">Name</a>
+                            {% endif %}
+                        </th>
+                        <th scope="col">
+                            {% if request.args.sort_by == "status.desc" %}
+                            <a class="text-white"
+                               href="{{ url_for('sensor.index',
+                                    sort_by = 'status',
+                                    name = request.args.name,
+                                    status = request.args.status,
+                                    active = request.args.active,
+                                    userId = request.args.userId )}}">Status</a>
+                            {% else %}
+                            <a class="text-white"
+                               href="{{ url_for('sensor.index',
+                                    sort_by = 'status.desc',
+                                    name = request.args.name,
+                                    status = request.args.status,
+                                    active = request.args.active,
+                                    userId = request.args.userId )}}">Status</a>
+                            {% endif %}
+                        </th>
+                        <th scope="col">
+                            {% if request.args.sort_by == "status.desc" %}
+                            <a class="text-white"
+                               href="{{ url_for('sensor.index',
+                                    sort_by = 'active',
+                                    name = request.args.name,
+                                    status = request.args.status,
+                                    active = request.args.active,
+                                    userId = request.args.userId )}}">Active</a>
+                            {% else %}
+                            <a class="text-white"
+                               href="{{ url_for('sensor.index',
+                                    sort_by = 'active.desc',
+                                    name = request.args.name,
+                                    status = request.args.status,
+                                    active = request.args.active,
+                                    userId = request.args.userId )}}">Active</a>
+                            {% endif %}
+                        </th>
+                        <th scope="col">User Associated</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for sensor in sensors %}
+                    {{ macro.show_sensor(sensor) }}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <nav aria-label="Pagination">
+                <ul class="pagination justify-content-center">
+                    {% if pagination.current_page != 1 %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('sensor.index',
+                                page = 1,
+                                name = request.args.name,
+                                status = request.args.status,
+                                active = request.args.active,
+                                userId = request.args.userId )}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a href="#" class="page-link" tabindex="-1" aria-disabled="true" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if pagination.current_page != 1 %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('sensor.index',
+                                page = (pagination.current_page-1),
+                                name = request.args.name,
+                                status = request.args.status,
+                                active = request.args.active,
+                                userId = request.args.userId )}}" aria-label="Previous">
+                            <span aria-hidden="true">&lsaquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a href="#" class="page-link" tabindex="-1" aria-disabled="true" aria-label="Previous">
+                            <span aria-hidden="true">&lsaquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% for n in range(pagination.current_page-5, pagination.current_page+5) %}
+                    {% if n >= 1 and n <= pagination.pages %}
+                    {% if n != pagination.current_page %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('sensor.index',
+                                page = n,
+                                name = request.args.name,
+                                status = request.args.status,
+                                active = request.args.active,
+                                userId = request.args.userId )}}">{{n}}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="+1" aria-disabled="true">{{n}}</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    {% if pagination.current_page != pagination.pages %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('sensor.index',
+                                page = (pagination.current_page+1),
+                                name = request.args.name,
+                                status = request.args.status,
+                                active = request.args.active,
+                                userId = request.args.userId )}}" aria-label="Next">
+                            <span aria-hidden="true">&rsaquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a href="#" class="page-link" tabindex="-1" aria-disabled="true" aria-label="Next">
+                            <span aria-hidden="true">&rsaquo;</span></a>
+                    </li>
+                    {% endif %}
+                    {% if pagination.current_page != pagination.pages %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('sensor.index',
+                                page = pagination.pages,
+                                name = request.args.name,
+                                status = request.args.status,
+                                active = request.args.active,
+                                userId = request.args.userId )}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a href="#" class="page-link" tabindex="-1" aria-disabled="true" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-2 d-none d-md-block"></div>
+    </div>
+</div>
+
+
+{% endblock %}

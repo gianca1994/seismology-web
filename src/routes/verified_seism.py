@@ -1,7 +1,6 @@
 import csv
 import io
 import json
-from datetime import datetime
 
 from flask import (
     Blueprint,
@@ -18,7 +17,7 @@ from ..forms.login import LoginForm
 from ..forms.seism import SeismFilterForm
 from ..utilities.functions import sendRequest
 
-verified_seism = Blueprint("verified_seism", __name__, url_prefix="/verified-seism")
+verified_seism = Blueprint("verified_seism", __name__, url_prefix="/verified-seisms")
 
 
 @verified_seism.route("/")
@@ -122,7 +121,7 @@ def index():
 @verified_seism.route("/view/<int:id>")
 @register_breadcrumb(verified_seism, ".view", "View")
 def view(id):
-    r = sendRequest(method="get", url="/verified-seism/" + str(id))
+    r = sendRequest(method="get", url="/verified-seisms/" + str(id))
 
     if r.status_code == 404:
         return redirect(url_for("verified_seism.index"))

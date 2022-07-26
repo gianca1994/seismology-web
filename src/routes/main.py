@@ -19,27 +19,28 @@ def index():
 @main.route("/login", methods=["POST"])
 def login():
     loginForm = LoginForm()
-    if loginForm.validate_on_submit():
-        data = (
-                '{"'
-                + 'email":"' + loginForm.email.data
-                + '", "password":"' + loginForm.password.data
-                + '"}'
-        )
-        r = requests.post(
+
+    if loginForm.is_submitted():
+        data = json.dumps({
+            "email": loginForm.email.data,
+            "password": loginForm.password.data
+        })
+
+        response = requests.request(
+            "POST",
             current_app.config["API_URL"] + "/auth/login",
-            headers={"content-type": "application/json"},
+            headers={'Content-Type': 'application/json'},
             data=data
         )
-        if r.status_code == 200:
-            user_data = json.loads(r.text)
+
+        if response.status_code == 200:
+            user_data = json.loads(response.text)
             user = User(
                 id=user_data.get("id"),
                 email=user_data.get("email"),
                 role=user_data.get("role")
             )
             login_user(user)
-
             req = make_response(redirect(url_for("main.index")))
             req.set_cookie("access_token", user_data.get("access_token"), httponly=True)
             return req

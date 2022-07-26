@@ -8,7 +8,7 @@ from ..forms.user import UserCreateForm, UserEditForm
 from ..utilities.functions import sendRequest
 from .auth import admin_required
 
-user = Blueprint("user", __name__, url_prefix="/user")
+user = Blueprint("user", __name__, url_prefix="/users")
 
 
 @user.route("/")
@@ -46,7 +46,7 @@ def index():
 @admin_required
 @register_breadcrumb(user, ".view", "View")
 def view(id):
-    r = sendRequest(method="get", url="/user/" + str(id), auth=True)
+    r = sendRequest(method="get", url="/users/" + str(id), auth=True)
     if r.status_code == 404:
         flash("User not found", "danger")
         return redirect(url_for("user.index"))
@@ -88,7 +88,7 @@ def create():
 def edit(id):
     form = UserEditForm()
     if not form.is_submitted():
-        r = sendRequest(method="get", url="/user/" + str(id), auth=True)
+        r = sendRequest(method="get", url="/users/" + str(id), auth=True)
         if r.status_code == 404:
             flash("User not found", "danger")
             return redirect(url_for("user.index"))
@@ -102,7 +102,7 @@ def edit(id):
             "admin": form.admin.data
         }
         data = json.dumps(user)
-        r = sendRequest(method="put", url="/user/" + str(id), data=data, auth=True)
+        r = sendRequest(method="put", url="/users/" + str(id), data=data, auth=True)
         flash("User edited", "success")
         return redirect(url_for("user.index"))
     return render_template(
@@ -116,6 +116,6 @@ def edit(id):
 @login_required
 @admin_required
 def delete(id):
-    r = sendRequest(method="delete", url="/user/" + str(id), auth=True)
+    r = sendRequest(method="delete", url="/users/" + str(id), auth=True)
     flash("User deleted", "danger")
     return redirect(url_for("user.index"))

@@ -1,8 +1,10 @@
+import os
 from functools import wraps
 
 import jwt
-from flask import flash, redirect, request, url_for
+from flask import flash, redirect, url_for
 from flask_login import UserMixin, current_user
+
 from .. import login_manager
 
 
@@ -15,11 +17,11 @@ class User(UserMixin):
 
 @login_manager.request_loader
 def load_user(request):
+
     if "access_token" in request.cookies:
         try:
-            decoded = jwt.decode(request.cookies["access_token"], verify=False)
-            user_data = decoded["user_claims"]
-            user = User(user_data["id"], user_data["email"], user_data["admin"])
+            decoded = jwt.decode(request.cookies["access_token"], "SECRET_KEY_TOKEN",algorithms=["HS256"],verify=False)
+            user = User(decoded["id"], decoded["email"], decoded["role"])
             return user
         except jwt.exceptions.InvalidTokenError:
             print("Invalid Token.")
@@ -37,7 +39,7 @@ def unauthorized_callback():
 def admin_required(fn):
     @wraps(fn)
     def wrapper(*args, **kws):
-        if not current_user.admin:
+        if not current_user.role == 'admin':
             flash("Acceso restringido a administradores.", "warning")
             return redirect(url_for("main.index"))
         return fn(*args, **kws)

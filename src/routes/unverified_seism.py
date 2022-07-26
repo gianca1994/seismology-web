@@ -8,7 +8,7 @@ from .auth import admin_required
 from ..forms.seism import UnverifiedSeismEditForm, SeismFilterForm
 from ..utilities.functions import sendRequest
 
-unverified_seism = Blueprint("unverified_seism", __name__, url_prefix="/unverified-seism")
+unverified_seism = Blueprint("unverified_seism", __name__, url_prefix="/unverified-seisms")
 
 
 @unverified_seism.route("/")
@@ -19,7 +19,7 @@ def index():
 
     r = sendRequest(method="get", url="/sensors-info")
     filter.sensorId.choices = [(int(sensor["id"]), sensor["name"]) for sensor in json.loads(r.text)["sensors"]]
-    filter.sensorId.choices.insert(0, [0, "All"])
+    filter.sensorId.choices.insert(0, (0, "All"))
     data = {}
 
     if filter.validate():
@@ -54,9 +54,9 @@ def index():
             del data["page"]
 
     r = sendRequest(method="get", url="/unverified-seisms", data=json.dumps(data), auth=True)
-
+    print(r.text)
     if r.status_code == 200:
-        unverified_seisms = json.loads(r.text)["Unverified-seisms"]
+        unverified_seisms = json.loads(r.text)["Unverif-seisms"]
 
         pagination = {
             "total": json.loads(r.text)["total"],
@@ -80,7 +80,7 @@ def index():
 @login_required
 @register_breadcrumb(unverified_seism, ".view", "Unverified Seism")
 def view(id):
-    r = sendRequest(method="get", url="/unverified-seism/" + str(id), auth=True)
+    r = sendRequest(method="get", url="/unverified-seisms/" + str(id), auth=True)
 
     if r.status_code == 404:
         flash("Seism not found", "danger")
@@ -101,7 +101,7 @@ def edit(id):
     form = UnverifiedSeismEditForm()
 
     if not form.is_submitted():
-        r = sendRequest(method="get", url="/unverified-seism/" + str(id), auth=True)
+        r = sendRequest(method="get", url="/unverified-seisms/" + str(id), auth=True)
 
         if r.status_code == 404:
             flash("Unvrified Seism not found", "danger")
@@ -119,7 +119,7 @@ def edit(id):
             "verified": form.verified.data,
         }
         data = json.dumps(unverified_seism)
-        r = sendRequest(method="put", url="/unverified-seism/" + str(id), data=data, auth=True)
+        r = sendRequest(method="put", url="/unverified-seisms/" + str(id), data=data, auth=True)
         flash("Unverified Seism edited", "success")
         return redirect(url_for("unverified_seism.index"))
 
@@ -133,7 +133,7 @@ def edit(id):
 @unverified_seism.route("/delete/<int:id>")
 @login_required
 def delete(id):
-    r = sendRequest(method="delete", url="/unverified-seism/" + str(id), auth=True)
+    r = sendRequest(method="delete", url="/unverified-seisms/" + str(id), auth=True)
     flash("Unverified Seism deleted", "danger")
     return redirect(url_for("unverified_seism.index"))
 

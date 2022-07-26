@@ -1,6 +1,5 @@
 {% from "form_macros.html" import show_field, show_submit, show_placeholder %}
 
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -45,7 +44,7 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" href="{{url_for('unverified_seism.index')}}">Unverified Seisms</a>
                     </li>
-                    {% if current_user.admin %}
+                    {% if current_user.role == 'admin' %}
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" href="{{url_for('sensor.index')}}">Sensors</a>
                     </li>
@@ -66,9 +65,7 @@
                         </div>
                     </li>
                 </ul>
-
                 {% else %}
-
                 <form class="form-inline" method="POST" action="{{ url_for('main.login') }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <div class="form-row">
@@ -79,7 +76,7 @@
                             {{ show_placeholder(loginForm.password, class="form-control") }}
                         </div>
                         <div class="form-group col-md-2">
-                            {{ show_submit(loginForm.submit, class="btn btn-success") }}
+                            {{ show_submit(loginForm.submit, class="btn btn-primary") }}
                         </div>
                     </div>
                 </form>

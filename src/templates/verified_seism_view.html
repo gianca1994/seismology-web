@@ -1,0 +1,53 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-2 d-none d-md-block"></div>
+        <div class="col-md-8">
+            <h1>Verified Seism</h1>
+
+            <div class="card text-white bg-dark" style="max-width: 100%;">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h3>Seism {{verified_seism.id}}</h3>
+                    </div>
+                    <div class="card-text"></div>
+                    <div class="table-responsive text-center">
+                        <table class="table table-dark table-striped table-hover table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>Date Time</td>
+                                <td>{{verified_seism.datetime}}</td>
+                            </tr>
+                            <tr>
+                                <td>Depth</td>
+                                <td>{{verified_seism.depth}}</td>
+                            </tr>
+                            <tr>
+                                <td>Magnitude</td>
+                                <td>{{verified_seism.magnitude}}</td>
+                            </tr>
+                            <tr>
+                                <td>Latitude</td>
+                                <td>{{verified_seism.latitude}}</td>
+                            </tr>
+                            <tr>
+                                <td>Longitude</td>
+                                <td>{{verified_seism.longitude}}</td>
+                            </tr>
+                            <tr>
+                                <td>Sensor</td>
+                                <td>{{verified_seism.sensor.name}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 d-none d-md-block"></div>
+    </div>
+</div>
+{% endblock %}

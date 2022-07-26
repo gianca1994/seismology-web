@@ -1,0 +1,38 @@
+{% extends "main.html" %} {# Herencia #}
+{% import "macros.html" as macro %}
+{% from "form_macros.html" import show_field, show_submit, show_checkbox %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 d-none d-md-block"></div>
+        <div class="col-auto">
+            <div class="container">
+                <h3 class="text-uppercase text-center text-white">Edit Seism</h3>
+                <hr class="bg-white"/>
+
+                <form method="POST" action="{{ url_for('unverified_seism.edit', id=id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                    <div class="form-row">
+                        {{show_field(form.depth, class="form-control")}}
+                    </div>
+                    <br>
+                    <div class="form-row">
+                        {{show_field(form.magnitude, class="form-control")}}
+                    </div>
+                    <br>
+                    <div class="form-row">
+                        {{show_checkbox(form.verified)}}
+                    </div>
+                    <br>
+                    <div class="form-row">
+                        {{show_submit(form.submit, class="btn btn-success")}}
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4 d-none d-md-block"></div>
+    </div>
+</div>
+{% endblock %}
