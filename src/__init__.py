@@ -14,7 +14,7 @@ def create_app():
     load_dotenv()
 
     app.config["API_URL"] = os.getenv("API_URL")
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 10
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 3600
     csrf = CSRFProtect(app)
     csrf.init_app(app)
     app.config["SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
@@ -26,6 +26,7 @@ def create_app():
     app.register_blueprint(verified_seism.verified_seism)
     app.register_blueprint(unverified_seism.unverified_seism)
     app.register_blueprint(user.user)
+    app.register_blueprint(user.auth)
     app.register_blueprint(sensor.sensor)
 
     return app

@@ -54,7 +54,7 @@ def index():
             del data["page"]
 
     r = sendRequest(method="get", url="/unverified-seisms", data=json.dumps(data), auth=True)
-    print(r.text)
+
     if r.status_code == 200:
         unverified_seisms = json.loads(r.text)["Unverif-seisms"]
 

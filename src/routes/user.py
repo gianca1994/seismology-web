@@ -9,6 +9,7 @@ from ..utilities.functions import sendRequest
 from .auth import admin_required
 
 user = Blueprint("user", __name__, url_prefix="/users")
+auth = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 @user.route("/")
@@ -26,16 +27,11 @@ def index():
 
     if r.status_code == 200:
         users = json.loads(r.text)["Users"]
-        pagination = {}
-        pagination["total"] = json.loads(r.text)["total"]
-        pagination["pages"] = json.loads(r.text)["pages"]
-        pagination["current_page"] = json.loads(r.text)["page"]
         title = "Users List"
         return render_template(
             "users.html",
             title=title,
             users=users,
-            pagination=pagination,
         )
     else:
         return redirect(url_for("user.index"))
@@ -59,7 +55,7 @@ def view(id):
     )
 
 
-@user.route("/create", methods=["GET", "POST"])
+@auth.route("/create", methods=["GET", "POST"])
 @login_required
 @admin_required
 @register_breadcrumb(user, ".create", "Create User")
@@ -69,10 +65,12 @@ def create():
         user = {
             "email": form.email.data,
             "password": form.password.data,
-            "admin": form.admin.data,
+            "firstname": form.first_name.data,
+            "lastname": form.last_name.data,
+            "role": form.role.data
         }
         data = json.dumps(user)
-        r = sendRequest(method="post", url="/users", data=data, auth=True)
+        sendRequest(method="post", url="/auth/register", data=data, auth=True)
         return redirect(url_for("user.index"))
 
     return render_template(
@@ -92,14 +90,19 @@ def edit(id):
         if r.status_code == 404:
             flash("User not found", "danger")
             return redirect(url_for("user.index"))
+
         user = json.loads(r.text)
         form.email.data = user["email"]
-        form.admin.data = user["admin"]
+        form.first_name.data = user["firstname"]
+        form.last_name.data = user["lastname"]
+        form.role.data = user["role"]
 
     if form.validate_on_submit():
         user = {
             "email": form.email.data,
-            "admin": form.admin.data
+            "firstname": form.first_name.data,
+            "lastname": form.last_name.data,
+            "role": form.role.data
         }
         data = json.dumps(user)
         r = sendRequest(method="put", url="/users/" + str(id), data=data, auth=True)

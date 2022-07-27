@@ -45,7 +45,7 @@ def index():
     r = sendRequest(method="get", url="/sensors", data=json.dumps(data), auth=True)
 
     if r.status_code == 200:
-        sensors = json.loads(r.text)["sensors"]
+        sensors = json.loads(r.text)["Sensors"]
         pagination = {
             "total": json.loads(r.text)["total"],
             "pages": json.loads(r.text)["pages"],
@@ -97,12 +97,12 @@ def create():
             "port": form.port.data,
             "status": form.status.data,
             "active": form.active.data,
-            "userId": form.userId.data,
+            "userId": None
         }
         data = json.dumps(sensor)
         r = sendRequest(method="post", url="/sensors", data=data, auth=True)
         return redirect(url_for("sensor.index"))
-    return render_template("sensor_edit.html", form=form)
+    return render_template("sensor_create.html", form=form)
 
 
 @sensor.route("/edit/<int:id>", methods=["GET", "POST"])

@@ -21,10 +21,6 @@ class SensorCreateForm(FlaskForm):
     status = BooleanField(label="Status")
     active = BooleanField(label="Active")
 
-    userId = SelectField(label="User Associated", validators=[
-        validators.InputRequired(message="This field is required")
-    ], coerce=int)
-
     submit = SubmitField(label="Send")
 
 

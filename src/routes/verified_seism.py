@@ -96,7 +96,6 @@ def index():
     r = sendRequest(method="get", url="/verified-seisms", data=json.dumps(data))
 
     if r.status_code == 200:
-
         verified_seisms = json.loads(r.text)["Verified-seisms"]
 
         pagination = {
