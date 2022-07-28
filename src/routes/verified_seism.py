@@ -124,7 +124,7 @@ def view(id):
 
     if r.status_code == 404:
         return redirect(url_for("verified_seism.index"))
-
+    print(json.loads(r.text))
     verified_seism = json.loads(r.text)
     title = "Verified Seism View"
     loginForm = LoginForm()

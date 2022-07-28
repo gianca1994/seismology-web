@@ -6,7 +6,7 @@
     <div class="row">
 
         <div class="col-md-2">
-            <div class="collapse show" id="filter">
+            <div class="collapse" id="filter">
                 <div class="container">
 
                     <h3 class="text-uppercase text-center text-white">Filters</h3>
@@ -14,11 +14,11 @@
 
                     <form method="GET" action="{{url_for('verified_seism.index')}}">
                         <div class="form-row">
-                            <div class="col">
-                                {{show_submit(filter.submit, class='btn btn-success')}}
+                            <div class="">
+                                {{show_submit(filter.submit, class='btn btn-info container-fluid')}}
                             </div>
                             <div class="col-auto">
-                                {{show_submit(filter.download , class='btn btn-success')}}
+                                {{show_submit(filter.download , class='btn btn-primary ')}}
                             </div>
                         </div>
                         <br>
@@ -52,12 +52,12 @@
 
             <div class="row my-3">
                 <div class="col-auto">
-                    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#filter">
+                    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#filter">
                         Toggle Filters
                     </button>
                 </div>
                 <div class="col-auto my-auto">
-                    Total: {{pagination.total}}
+                    Total: {{pagination.total}} found items.
                 </div>
             </div>
 

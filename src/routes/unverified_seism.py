@@ -63,6 +63,7 @@ def index():
             "pages": json.loads(r.text)["pages"],
             "current_page": json.loads(r.text)["page"]
         }
+
         title = "Unverified Seisms List"
         return render_template(
             "unverified_seisms.html",
