@@ -25,7 +25,7 @@
 
 {% block menu %}
 <header>
-    <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand logo font-weight-bold" href="{{url_for('main.index')}}">
                 <i class="fas fa-database"></i> Seismology </a>
@@ -35,7 +35,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div id="navcol-1" class="collapse navbar-collapse">
+            <div id="navcol-1" class="collapse navbar-collapse" >
                 <ul class="nav navbar-nav mr-auto">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" href="{{url_for('verified_seism.index')}}">Verified Seisms</a>
@@ -58,7 +58,7 @@
                 <ul class="navbar-nav ml-auto nav-flex-icons">
                     <li class="nav-item dropdown" role="presentation">
                         <a class="nav-link dropdown-toggle" id="profile" data-toggle="dropdown">
-                            {{ current_user.email }}
+                            Session started with, {{ current_user.email }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-default" aria-labelledby="profile">
                             <a class="dropdown-item" href="{{ url_for('main.logout') }}">Log out</a>
@@ -89,7 +89,7 @@
 
 {% block breadcrumbs %}
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-dark">
+    <ol class="breadcrumb bg-info">
         {% for breadcrumb in breadcrumbs %}
         <li class="breadcrumb-item">
             {% if not loop.last %}
@@ -125,14 +125,11 @@
 </div>
 {% endblock %}
 
-<br>
-
 <main>
     {% block content %}
     {% endblock %}
 </main>
 
-<br><br>
 
 {% block footer %}
 <footer class="footer mt-auto py-3">
