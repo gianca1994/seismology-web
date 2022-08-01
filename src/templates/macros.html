@@ -1,0 +1,94 @@
+{% macro show_verified_seism(verified_seism) %}
+<tr>
+    <th scope="row">{{verified_seism.id}}</th>
+    <td>{{verified_seism.datetime}}</td>
+    <td>{{verified_seism.depth}}</td>
+    <td>{{verified_seism.magnitude}}</td>
+    <td>{{verified_seism.sensor.name}}</td>
+    <td>
+        <div class="btn-group" role="group">
+
+            <a class="btn btn-sm btn-dark" type="button"
+               href="{{ url_for('verified_seism.view', id=verified_seism.id) }}">
+                <i class="fas fa-eye"></i></a>
+
+        </div>
+    </td>
+</tr>
+{% endmacro %}
+
+{% macro show_unverified_seism(unverified_seism) %}
+<tr>
+    <th scope="row">{{unverified_seism.id}}</th>
+    <td>{{unverified_seism.datetime}}</td>
+    <td>{{unverified_seism.depth}}</td>
+    <td>{{unverified_seism.magnitude}}</td>
+    <td>{{unverified_seism.sensor.name}}</td>
+    <td>
+        <div class="btn-group" role="group">
+
+            <a class="btn btn-sm btn-dark" type="button"
+               href="{{url_for('unverified_seism.view', id=unverified_seism.id)}}">
+                <i class="fas fa-eye"></i></a>
+
+            <a class="btn btn-sm btn-dark" type="button"
+               href="{{url_for('unverified_seism.edit', id=unverified_seism.id)}}">
+                <i class="fas fa-edit"></i></a>
+
+            <a class="btn btn-sm btn-dark" type="button"
+               href="{{url_for('unverified_seism.delete', id=unverified_seism.id)}}">
+                <i class="fas fa-trash"></i></a>
+
+        </div>
+    </td>
+</tr>
+{% endmacro %}
+
+{% macro show_user(user) %}
+<tr>
+    <th scope="row">{{user.id}}</th>
+    <td>{{user.email}}</td>
+    <td>{{user.role}}</td>
+    <td>
+        <div class="btn-group" role="group">
+
+            <a class="btn btn-sm btn-dark" type="button" href="{{ url_for('user.view',id=user.id) }}">
+                <i class="fas fa-eye"></i></a>
+
+            <a class="btn btn-sm btn-dark" type="button" href="{{url_for('user.edit', id=user.id)}}">
+                <i class="fas fa-edit"></i></a>
+
+            <a class="btn btn-sm btn-dark" type="button" href="{{url_for('user.delete',id=user.id)}}">
+                <i class="fas fa-trash"></i></a>
+
+        </div>
+    </td>
+</tr>
+{% endmacro %}
+
+{% macro show_sensor(sensor) %}
+<tr>
+    <th scope="row">{{sensor.id}}</th>
+    <td>{{sensor.name}}</td>
+    <td>{{sensor.status}}</td>
+    <td>{{sensor.active}}</td>
+    <td>
+        {% if sensor.user %}
+        {{sensor.user.email}}
+        {% endif %}
+    </td>
+    <td>
+        <div class="btn-group" role="group">
+
+            <a class="btn btn-sm btn-dark" type="button" href="{{url_for('sensor.view',id=sensor.id)}}">
+                <i class="fas fa-eye"></i></a>
+
+            <a class="btn btn-sm btn-dark" type="button" href="{{url_for('sensor.edit', id=sensor.id)}}">
+                <i class="fas fa-edit"></i></a>
+
+            <a class="btn btn-sm btn-dark" type="button" href="{{url_for('sensor.delete',id=sensor.id)}}">
+                <i class="fas fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% endmacro %}

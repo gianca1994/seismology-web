@@ -1,0 +1,309 @@
+{% extends "main.html" %}
+{% import "macros.html" as macro %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-2">
+            <div class="collapse" id="filter">
+                <div class="container">
+
+                    <h3 class="text-uppercase text-center text-white">Filters</h3>
+                    <hr class="bg-white"/>
+
+                    <form method="GET" action="{{url_for('verified_seism.index')}}">
+                        <div class="form-row">
+                            <div class="">
+                                {{show_submit(filter.submit, class='btn btn-info container-fluid')}}
+                            </div>
+                            <div class="col-auto">
+                                {{show_submit(filter.download , class='btn btn-primary ')}}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-row">
+                            {{show_field(filter.sensorId, class='form-control')}}
+                        </div>
+                        <br>
+                        <div class="form-row">
+                            {{show_field(filter.from_datetime, class='form-control')}}
+                            {{show_field(filter.to_datetime, class='form-control')}}
+                        </div>
+                        <br>
+                        <div class="form-row">
+                            {{show_field(filter.depth_min, class='form-control')}}
+                            {{show_field(filter.depth_max, class='form-control')}}
+                        </div>
+                        <br>
+                        <div class="form-row">
+                            {{show_field(filter.magnitude_min, class='form-control')}}
+                            {{show_field(filter.magnitude_max, class='form-control')}}
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <h2 class="text-uppercase text-center text-white mb-0">{{title}}</h2>
+            <hr class="bg-white"/>
+
+            <div class="row my-3">
+                <div class="col-auto">
+                    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#filter">
+                        Toggle Filters
+                    </button>
+                </div>
+                <div class="col-auto my-auto">
+                    Total: {{pagination.total}} found items.
+                </div>
+            </div>
+
+            <div class="table-responsive text-center">
+                <table class="table table-dark table-striped table-hover table-bordered" style="text-align: center">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">
+                            {% if request.args.sort_by == "datetime.desc" %}
+                            <a class="text-white"
+                               href="{{ url_for('verified_seism.index',
+                                    sort_by = 'datetime',
+                                    datetime = request.args.datetime,
+                                    from_datetime = request.args.from_datetime,
+                                    to_datetime = request.args.to_datetime,
+                                    depth_min = request.args.depth_min,
+                                    depth_max = request.args.depth_max,
+                                    magnitude_max = request.args.magnitude_max,
+                                    magnitude_min = request.args.magnitude_min,
+                                    sensorId = request.args.sensorId )}}">Date Time</a>
+                            {% else %}
+                            <a class="text-white"
+                               href="{{ url_for('verified_seism.index',
+                                    sort_by = 'datetime.desc',
+                                    datetime = request.args.datetime,
+                                    from_datetime = request.args.from_datetime,
+                                    to_datetime = request.args.to_datetime,
+                                    depth_min = request.args.depth_min,
+                                    depth_max = request.args.depth_max,
+                                    magnitude_max = request.args.magnitude_max,
+                                    magnitude_min = request.args.magnitude_min,
+                                    sensorId = request.args.sensorId )}}">Date Time</a>
+                            {% endif %}
+                        </th>
+                        <th scope="col">
+                            {% if request.args.sort_by == "depth.desc" %}
+                            <a class="text-white"
+                               href="{{ url_for('verified_seism.index',
+                                    sort_by = 'depth',
+                                    datetime = request.args.datetime,
+                                    from_datetime = request.args.from_datetime,
+                                    to_datetime = request.args.to_datetime,
+                                    depth_min = request.args.depth_min,
+                                    depth_max = request.args.depth_max,
+                                    magnitude_max = request.args.magnitude_max,
+                                    magnitude_min = request.args.magnitude_min,
+                                    sensorId = request.args.sensorId )}}">Depth</a>
+                            {% else %}
+                            <a class="text-white"
+                               href="{{ url_for('verified_seism.index',
+                                    sort_by = 'depth.desc',
+                                    datetime = request.args.datetime,
+                                    from_datetime = request.args.from_datetime,
+                                    to_datetime = request.args.to_datetime,
+                                    depth_min = request.args.depth_min,
+                                    depth_max = request.args.depth_max,
+                                    magnitude_max = request.args.magnitude_max,
+                                    magnitude_min = request.args.magnitude_min,
+                                    sensorId = request.args.sensorId )}}">Depth</a>
+                            {% endif %}
+                        </th>
+                        <th scope="col">
+                            {% if request.args.sort_by == "magnitude.desc" %}
+                            <a class="text-white"
+                               href="{{ url_for('verified_seism.index',
+                                    sort_by = 'magnitude',
+                                    datetime = request.args.datetime,
+                                    from_datetime = request.args.from_datetime,
+                                    to_datetime = request.args.to_datetime,
+                                    depth_min = request.args.depth_min,
+                                    depth_max = request.args.depth_max,
+                                    magnitude_max = request.args.magnitude_max,
+                                    magnitude_min = request.args.magnitude_min,
+                                    sensorId = request.args.sensorId )}}">Magnitude</a>
+                            {% else %}
+                            <a class="text-white"
+                               href="{{ url_for('verified_seism.index',
+                                    sort_by = 'magnitude.desc',
+                                    datetime = request.args.datetime,
+                                    from_datetime = request.args.from_datetime,
+                                    to_datetime = request.args.to_datetime,
+                                    depth_min = request.args.depth_min,
+                                    depth_max = request.args.depth_max,
+                                    magnitude_max = request.args.magnitude_max,
+                                    magnitude_min = request.args.magnitude_min,
+                                    sensorId = request.args.sensorId )}}">Magnitude</a>
+                            {% endif %}
+                        </th>
+                        <th scope="col">
+                            {% if request.args.sort_by == "sensor.name.desc" %}
+                            <a class="text-white"
+                               href="{{ url_for('verified_seism.index',
+                                    sort_by = 'sensor.name',
+                                    datetime = request.args.datetime,
+                                    from_datetime = request.args.from_datetime,
+                                    to_datetime = request.args.to_datetime,
+                                    depth_min = request.args.depth_min,
+                                    depth_max = request.args.depth_max,
+                                    magnitude_max = request.args.magnitude_max,
+                                    magnitude_min = request.args.magnitude_min,
+                                    sensorId = request.args.sensorId )}}">Sensor Name</a>
+                            {% else %}
+                            <a class="text-white"
+                               href="{{ url_for('verified_seism.index',
+                                    sort_by = 'sensor.name.desc',
+                                    datetime = request.args.datetime,
+                                    from_datetime = request.args.from_datetime,
+                                    to_datetime = request.args.to_datetime,
+                                    depth_min = request.args.depth_min,
+                                    depth_max = request.args.depth_max,
+                                    magnitude_max = request.args.magnitude_max,
+                                    magnitude_min = request.args.magnitude_min,
+                                    sensorId = request.args.sensorId )}}">Sensor Name</a>
+                            {% endif %}
+                        </th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for verified_seism in verified_seisms %}
+                    {{ macro.show_verified_seism(verified_seism) }}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <nav aria-label="Pagination">
+                <ul class="pagination justify-content-center">
+                    {% if pagination.current_page != 1 %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('verified_seism.index',
+                                page = 1,
+                                datetime = request.args.datetime,
+                                from_datetime = request.args.from_datetime,
+                                to_datetime = request.args.to_datetime,
+                                depth_min = request.args.depth_min,
+                                depth_max = request.args.depth_max,
+                                magnitude_max = request.args.magnitude_max,
+                                magnitude_min = request.args.magnitude_min,
+                                sensorId = request.args.sensorId )}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a href="#" class="page-link" tabindex="-1" aria-disabled="true" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if pagination.current_page != 1 %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('verified_seism.index',
+                                page = (pagination.current_page-1),
+                                datetime = request.args.datetime,
+                                from_datetime = request.args.from_datetime,
+                                to_datetime = request.args.to_datetime,
+                                depth_min = request.args.depth_min,
+                                depth_max = request.args.depth_max,
+                                magnitude_max = request.args.magnitude_max,
+                                magnitude_min = request.args.magnitude_min,
+                                sensorId = request.args.sensorId )}}" aria-label="Previous">
+                            <span aria-hidden="true">&lsaquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a href="#" class="page-link" tabindex="-1" aria-disabled="true" aria-label="Previous">
+                            <span aria-hidden="true">&lsaquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% for n in range(pagination.current_page-5, pagination.current_page+5) %}
+                    {% if n >= 1 and n <= pagination.pages %}
+                    {% if n != pagination.current_page %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('verified_seism.index',
+                                page = n,
+                                datetime = request.args.datetime,
+                                from_datetime = request.args.from_datetime,
+                                to_datetime = request.args.to_datetime,
+                                depth_min = request.args.depth_min,
+                                depth_max = request.args.depth_max,
+                                magnitude_max = request.args.magnitude_max,
+                                magnitude_min = request.args.magnitude_min,
+                                sensorId = request.args.sensorId )}}">{{n}}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="+1" aria-disabled="true">{{n}}</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    {% if pagination.current_page != pagination.pages %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('verified_seism.index',
+                                page = (pagination.current_page+1),
+                                datetime = request.args.datetime,
+                                from_datetime = request.args.from_datetime,
+                                to_datetime = request.args.to_datetime,
+                                depth_min = request.args.depth_min,
+                                depth_max = request.args.depth_max,
+                                magnitude_max = request.args.magnitude_max,
+                                magnitude_min = request.args.magnitude_min,
+                                sensorId = request.args.sensorId )}}" aria-label="Next">
+                            <span aria-hidden="true">&rsaquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a href="#" class="page-link" tabindex="-1" aria-disabled="true" aria-label="Next">
+                            <span aria-hidden="true">&rsaquo;</span></a>
+                    </li>
+                    {% endif %}
+                    {% if pagination.current_page != pagination.pages %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('verified_seism.index',
+                                page = pagination.pages,
+                                datetime = request.args.datetime,
+                                from_datetime = request.args.from_datetime,
+                                to_datetime = request.args.to_datetime,
+                                depth_min = request.args.depth_min,
+                                depth_max = request.args.depth_max,
+                                magnitude_max = request.args.magnitude_max,
+                                magnitude_min = request.args.magnitude_min,
+                                sensorId = request.args.sensorId )}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a href="#" class="page-link" tabindex="-1" aria-disabled="true" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-2 d-none d-md-block"></div>
+    </div>
+</div>
+{% endblock %}

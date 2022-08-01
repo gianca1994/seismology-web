@@ -1,0 +1,9 @@
+flask
+flask_login
+Flask-Breadcrumbs
+flask_wtf
+email_validator
+flask-restful
+PyJWT
+python-dotenv
+requests
